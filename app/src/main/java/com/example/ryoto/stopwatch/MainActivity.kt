@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
     val handler = Handler()
     // 繰り返し代入するためvarを使う
     var timeValue = 0
+    var running = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +39,16 @@ class MainActivity : AppCompatActivity() {
 
         // start
         startButton.setOnClickListener {
-            handler.post(runnable)
+            if( !running ) {
+                handler.post(runnable)
+                running = true
+            }
         }
 
         // stop
         stopButton.setOnClickListener {
             handler.removeCallbacks(runnable)
+            running = false
         }
 
 
@@ -55,6 +60,7 @@ class MainActivity : AppCompatActivity() {
             timeToText()?.let {
                 timeText.text = it
             }
+            running = false
         }
     }
     private fun timeToText(time: Int = 0): String? {
